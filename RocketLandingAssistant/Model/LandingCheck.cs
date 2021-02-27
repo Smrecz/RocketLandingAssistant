@@ -2,7 +2,7 @@
 
 namespace RocketLandingAssistant.Model
 {
-    public class LandingCheck
+    internal class LandingCheck
     {
         public int RocketId { get; }
         public LandingPosition LandingPosition { get; }

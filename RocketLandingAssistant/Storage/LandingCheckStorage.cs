@@ -4,7 +4,7 @@ using RocketLandingAssistant.Model;
 
 namespace RocketLandingAssistant.Storage
 {
-    public class LandingCheckStorage : ILandingCheckStorage
+    internal class LandingCheckStorage : ILandingCheckStorage
     {
         private readonly Dictionary<int, LandingCheck> _landingChecks = new Dictionary<int, LandingCheck>();
 

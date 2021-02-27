@@ -2,7 +2,7 @@
 
 namespace RocketLandingAssistant.Storage
 {
-    public interface ILandingCheckStorage
+    internal interface ILandingCheckStorage
     {
         void AddLandingCheck(LandingCheck landingCheck);
         LandingPosition GetPotentialClashPosition(LandingCheck landingCheck);

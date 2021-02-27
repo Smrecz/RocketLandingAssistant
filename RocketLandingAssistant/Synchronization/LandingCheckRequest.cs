@@ -3,7 +3,7 @@ using RocketLandingAssistant.Model;
 
 namespace RocketLandingAssistant.Synchronization
 {
-    public class LandingCheckRequest
+    internal class LandingCheckRequest
     {
         private readonly TaskCompletionSource<LandingPosition> _taskCompletionSource;
 

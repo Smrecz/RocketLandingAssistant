@@ -3,7 +3,7 @@ using RocketLandingAssistant.Model;
 
 namespace RocketLandingAssistant.Helpers
 {
-    public class PositionCalculationHelper
+    internal class PositionCalculationHelper
     {
         public static HashSet<LandingPosition> GetPlatformPositionsFromCorners(LandingPosition leftTopPosition,
             LandingPosition rightBottomPosition)

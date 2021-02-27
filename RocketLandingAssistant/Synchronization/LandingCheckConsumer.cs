@@ -4,7 +4,7 @@ using RocketLandingAssistant.Storage;
 
 namespace RocketLandingAssistant.Synchronization
 {
-    public class LandingCheckConsumer
+    internal class LandingCheckConsumer
     {
         private readonly ILandingCheckStorage _landingCheckStorage;
 

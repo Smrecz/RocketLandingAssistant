@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 
 namespace RocketLandingAssistant.Synchronization
 {
-
-    public class LandingCheckChannel : IDisposable
+    internal class LandingCheckChannel : IDisposable
     {
         private readonly Channel<LandingCheckRequest> _landingCheckChannel = Channel.CreateUnbounded<LandingCheckRequest>();
 
