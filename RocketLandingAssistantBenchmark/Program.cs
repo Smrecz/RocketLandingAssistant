@@ -14,19 +14,34 @@ namespace RocketLandingAssistantBenchmark
                 LandingPosition.From(new Position(5, 5)),
                 LandingPosition.From(new Position(15, 15)));
 
-            [Benchmark]
-            public async Task LandOnPlatform() => await _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(5, 5)));
-
-            [Benchmark]
-            public async Task LandOutsideOfPlatform() => await _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(1, 1)));
-
-            [Benchmark]
-            public async Task Clash()
+            [GlobalSetup]
+            public async Task GlobalSetup()
             {
-                await Task.WhenAll(
-                    _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(5, 5))),
-                            _landingTrajectoryVerifier.VerifyPosition(2, LandingPosition.From(new Position(6, 6)))
-                    );
+                await _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(5, 5)));
+            }
+
+            [Benchmark]
+            public Task LandOnPlatform()
+            {
+                return _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(5, 5)));
+            }
+
+            [Benchmark]
+            public Task LandOutsideOfPlatform()
+            {
+                return _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(1, 1)));
+            }
+
+            [Benchmark]
+            public Task Clash()
+            {
+                return _landingTrajectoryVerifier.VerifyPosition(2, LandingPosition.From(new Position(5, 5)));
+            }
+
+            [GlobalCleanup]
+            public void GlobalCleanup()
+            {
+                _landingTrajectoryVerifier.Dispose();
             }
         }
 
