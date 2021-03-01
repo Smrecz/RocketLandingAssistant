@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using RocketLandingAssistant.Constants;
-using RocketLandingAssistant.Helpers;
 using RocketLandingAssistant.Model;
 using RocketLandingAssistant.Providers;
 using RocketLandingAssistant.Storage;
@@ -15,17 +13,20 @@ namespace RocketLandingAssistant
         private const int ClashDistance = 1;
 
         private readonly IDateTimeProvider _dateTimeProvider;
-        private readonly HashSet<LandingPosition> _landingPlatformPositions;
+        private readonly LandingPosition _leftTopPosition;
+        private readonly LandingPosition _rightBottomPosition;
         private readonly LandingCheckChannel _landingCheckChannel;
 
         private LandingTrajectoryVerifier(
             IDateTimeProvider dateTimeProvider,
-            HashSet<LandingPosition> landingPlatformPositions, 
+           LandingPosition leftTopPosition, 
+           LandingPosition rightBottomPosition, 
             LandingCheckConsumer landingCheckConsumer, 
             LandingCheckChannel landingCheckChannel)
         {
             _dateTimeProvider = dateTimeProvider;
-            _landingPlatformPositions = landingPlatformPositions;
+            _leftTopPosition = leftTopPosition;
+            _rightBottomPosition = rightBottomPosition;
             _landingCheckChannel = landingCheckChannel;
 
             landingCheckConsumer?.Consume(_landingCheckChannel.GetChannel());
@@ -39,7 +40,10 @@ namespace RocketLandingAssistant
         /// <returns></returns>
         public static LandingTrajectoryVerifier Initialize(LandingPosition leftTopPosition, LandingPosition rightBottomPosition)
         {
-            return Initialize(leftTopPosition, rightBottomPosition, new DateTimeProvider());
+            return Initialize(
+                leftTopPosition, 
+                rightBottomPosition, 
+                new DateTimeProvider());
         }
 
         /// <summary>
@@ -51,10 +55,12 @@ namespace RocketLandingAssistant
         /// <returns></returns>
         public static LandingTrajectoryVerifier Initialize(LandingPosition leftTopPosition, LandingPosition rightBottomPosition, IDateTimeProvider dateTimeProvider)
         {
-            var landingPlatformPositions =
-                PositionCalculationHelper.GetPlatformPositionsFromCorners(leftTopPosition, rightBottomPosition);
-
-            return new LandingTrajectoryVerifier(dateTimeProvider, landingPlatformPositions, new LandingCheckConsumer(new LandingCheckStorage()), new LandingCheckChannel());
+            return new LandingTrajectoryVerifier(
+                dateTimeProvider, 
+                leftTopPosition, 
+                rightBottomPosition, 
+                new LandingCheckConsumer(new LandingCheckStorage()), 
+                new LandingCheckChannel());
         }
 
         /// <summary>
@@ -110,7 +116,12 @@ namespace RocketLandingAssistant
 
         private bool IsOutOfPlatform(LandingPosition position)
         {
-            return _landingPlatformPositions.Contains(position) == false;
+            var isRightOfPlatform = position.Value.X > _rightBottomPosition.Value.X;
+            var isLeftOfPlatform = position.Value.X < _leftTopPosition.Value.X;
+            var isAboveThePlatform = position.Value.Y > _rightBottomPosition.Value.Y;
+            var isBelowThePlatform = position.Value.Y < _leftTopPosition.Value.Y;
+
+            return isRightOfPlatform || isLeftOfPlatform || isAboveThePlatform || isBelowThePlatform;
         }
 
         public void Dispose()
