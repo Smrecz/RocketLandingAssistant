@@ -9,7 +9,7 @@ using Xunit;
 
 namespace RocketLandingAssistant.Tests
 {
-    public partial class LandingTrajectoryVerifierTests
+    public partial class LandingTrajectoryVerifierTests : IDisposable
     {
         private readonly LandingTrajectoryVerifier _sut;
 
@@ -97,6 +97,11 @@ namespace RocketLandingAssistant.Tests
         {
             return _sut.VerifyPosition(rocketId, landingPosition)
                 .ContinueWith(task => task.Result.Should().BeEquivalentTo(expectedOutput));
+        }
+
+        public void Dispose()
+        {
+            _sut?.Dispose();
         }
     }
 }
