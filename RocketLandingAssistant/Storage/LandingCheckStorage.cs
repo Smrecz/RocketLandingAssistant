@@ -6,7 +6,7 @@ namespace RocketLandingAssistant.Storage
 {
     internal class LandingCheckStorage : ILandingCheckStorage
     {
-        private readonly Dictionary<int, LandingCheck> _landingChecks = new Dictionary<int, LandingCheck>();
+        private readonly Dictionary<RocketId, LandingCheck> _landingChecks = new Dictionary<RocketId, LandingCheck>();
 
         public void AddLandingCheck(LandingCheck landingCheck)
         {
@@ -20,7 +20,7 @@ namespace RocketLandingAssistant.Storage
             return previousLandingCheck?.LandingPosition;
         }
 
-        private LandingCheck GetPreviousLandingCheck(int currentRocketId, DateTime currentTimestamp)
+        private LandingCheck GetPreviousLandingCheck(RocketId currentRocketId, DateTime currentTimestamp)
         {
             LandingCheck previousLandingCheck = null;
 
@@ -62,7 +62,7 @@ namespace RocketLandingAssistant.Storage
             return landingCheck.Timestamp >= currentTimestamp;
         }
 
-        private static bool IsSameRocket(int currentRocketId, int rocketId)
+        private static bool IsSameRocket(RocketId currentRocketId, RocketId rocketId)
         {
             return rocketId == currentRocketId;
         }

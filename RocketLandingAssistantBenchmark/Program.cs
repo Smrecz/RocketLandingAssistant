@@ -17,25 +17,37 @@ namespace RocketLandingAssistantBenchmark
             [GlobalSetup]
             public async Task GlobalSetup()
             {
-                await _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(5, 5)));
+                var rocketId = RocketId.From(1);
+                var landingPosition = LandingPosition.From(new Position(5, 5));
+
+                await _landingTrajectoryVerifier.VerifyPosition(rocketId, landingPosition);
             }
 
             [Benchmark]
             public Task LandOnPlatform()
             {
-                return _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(5, 5)));
+                var rocketId = RocketId.From(1);
+                var landingPosition = LandingPosition.From(new Position(5, 5));
+
+                return _landingTrajectoryVerifier.VerifyPosition(rocketId, landingPosition);
             }
 
             [Benchmark]
             public Task LandOutsideOfPlatform()
             {
-                return _landingTrajectoryVerifier.VerifyPosition(1, LandingPosition.From(new Position(1, 1)));
+                var rocketId = RocketId.From(1);
+                var landingPosition = LandingPosition.From(new Position(1, 1));
+
+                return _landingTrajectoryVerifier.VerifyPosition(rocketId, landingPosition);
             }
 
             [Benchmark]
             public Task Clash()
             {
-                return _landingTrajectoryVerifier.VerifyPosition(2, LandingPosition.From(new Position(5, 5)));
+                var rocketId = RocketId.From(2);
+                var landingPosition = LandingPosition.From(new Position(5, 5));
+
+                return _landingTrajectoryVerifier.VerifyPosition(rocketId, landingPosition);
             }
 
             [GlobalCleanup]

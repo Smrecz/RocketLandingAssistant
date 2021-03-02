@@ -69,7 +69,7 @@ namespace RocketLandingAssistant
         /// <param name="rocketId">Rocket identifier.</param>
         /// <param name="position">Potential landing position to check.</param>
         /// <returns></returns>
-        public async Task<string> VerifyPosition(int rocketId, LandingPosition position)
+        public async Task<string> VerifyPosition(RocketId rocketId, LandingPosition position)
         {
             if (IsOutOfPlatform(position))
             {
